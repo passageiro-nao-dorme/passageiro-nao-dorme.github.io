@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Calcule quanto tempo e dinheiro o Transcol tira de você, veja os dados oficiais e saiba como cobrar.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Somos nós que movemos a Grande Vitória">
+<meta property="og:description" content="Calcule quanto tempo e dinheiro o Transcol tira de você, veja os dados oficiais e saiba como cobrar.">
+<meta name="theme-color" content="#00843D">
+<title>Somos nós que movemos a Grande Vitória</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Lexend:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --verde:#00843D; --verde-escuro:#005C2A; --amarelo:#FFCC29; --azul:#002776; --azul-claro:#2D5BD1;
+  --papel:#FFFFFF; --tinta:#16211B; --tinta-suave:#46524A; --linha:#D6DCD8; --vermelho:#C8281E;
+  --display:"Alfa Slab One","Rockwell","Georgia",serif;
+  --texto:"Lexend","Verdana","Segoe UI",sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --papel:#101713; --tinta:#EEF3EF; --tinta-suave:#B9C4BC; --linha:#2B3830; color-scheme:dark; }
+}
+:root[data-theme="dark"]{ --papel:#101713; --tinta:#EEF3EF; --tinta-suave:#B9C4BC; --linha:#2B3830; color-scheme:dark; }
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:var(--texto);font-size:19px;line-height:1.55;-webkit-text-size-adjust:100%}
+.faixa{padding:56px 22px}
+.miolo{max-width:640px;margin:0 auto}
+h1,h2{font-family:var(--display);font-weight:400;line-height:1.02;letter-spacing:.005em;margin:0 0 18px}
+h1{font-size:clamp(38px,10.5vw,70px);line-height:1.06}
+h2{font-size:clamp(29px,7.8vw,48px);line-height:1.08}
+p{margin:0 0 16px}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--azul-claro);outline-offset:3px}
+.btn{display:inline-block;font-family:var(--texto);font-weight:700;font-size:19px;padding:16px 22px;border-radius:999px;border:0;cursor:pointer;text-decoration:none;min-height:52px}
+.verde{background:var(--verde);color:#fff}
+.amarelo{background:var(--amarelo);color:#1B1A10}
+.azul{background:var(--azul);color:#fff}
+.branco{background:var(--papel);color:var(--tinta)}
+
+/* hero */
+.hero{min-height:88vh;display:flex;align-items:flex-end;padding-top:40px}
+.hero h1{margin-bottom:22px}
+.hero .sub{font-size:22px;max-width:30ch}
+.ilus{display:block;width:100%;height:auto;margin:0 0 22px}
+.ilus-p{max-width:150px}
+.ilus-m{max-width:420px}
+.letreiro{display:inline-flex;gap:10px;align-items:center;background:#0E1A12;color:var(--amarelo);font-family:var(--display);font-size:20px;padding:8px 14px;border-radius:6px;margin-bottom:26px;letter-spacing:.04em}
+.letreiro b{background:var(--amarelo);color:#0E1A12;padding:0 8px;border-radius:3px;font-weight:400}
+
+/* calculadora */
+.calc label{display:block;font-weight:700;margin:22px 0 8px}
+.calc input[type=range]{width:100%;height:44px;accent-color:var(--azul)}
+.calc .valor{font-family:var(--display);font-size:34px;line-height:1}
+.escolha{display:flex;gap:10px;flex-wrap:wrap}
+.escolha button{flex:1;min-width:120px;font:700 18px var(--texto);padding:14px;border-radius:14px;border:3px solid #1B1A10;background:transparent;color:#1B1A10;cursor:pointer}
+.escolha button[aria-pressed=true]{background:#1B1A10;color:var(--amarelo)}
+.resultado{margin-top:30px;background:#1B1A10;color:#fff;border-radius:22px;padding:26px 22px}
+.resultado .grande{font-family:var(--display);font-size:clamp(46px,14vw,86px);line-height:.95;color:var(--amarelo)}
+.resultado p{margin:6px 0 0}
+.resultado .comparar{margin-top:18px;padding-top:16px;border-top:2px dashed #5A5A40;color:#E8E6CF}
+
+/* linhas */
+.abas{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 22px}
+.abas button{font:700 18px var(--texto);padding:12px 18px;border-radius:999px;border:2px solid var(--linha);background:transparent;color:var(--tinta);cursor:pointer;min-height:48px}
+.abas button[aria-pressed=true]{background:var(--verde);border-color:var(--verde);color:#fff}
+.barra{margin:14px 0}
+.barra .rot{display:flex;justify-content:space-between;font-weight:700;margin-bottom:6px}
+.barra .trilho{height:34px;background:var(--linha);border-radius:8px;overflow:hidden}
+.barra .enche{height:100%;border-radius:8px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.enche.real{background:var(--vermelho)}
+.enche.direto{background:var(--verde)}
+.frase-linha{font-size:22px;font-weight:700;margin-top:20px}
+.nota{font-size:16px;color:var(--tinta-suave)}
+
+/* poder */
+.poder blockquote{margin:0 0 26px;font-family:var(--display);font-size:clamp(26px,7.2vw,40px);line-height:1.05;color:var(--amarelo)}
+.poder blockquote small{display:block;font-family:var(--texto);font-size:17px;color:#C9D4F2;margin-top:10px}
+details{border-top:2px solid rgba(255,255,255,.25);padding:4px 0}
+details:last-of-type{border-bottom:2px solid rgba(255,255,255,.25)}
+summary{cursor:pointer;list-style:none;font-weight:700;font-size:21px;padding:16px 36px 16px 0;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:4px;top:10px;font-family:var(--display);font-size:30px;color:var(--amarelo)}
+details[open] summary::after{content:"–"}
+details p{color:#E3E9F8}
+
+/* motorista */
+.funcoes{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 26px}
+.funcoes span{font-family:var(--display);font-size:19px;padding:10px 16px;border-radius:12px;background:var(--verde);color:#fff}
+.funcoes span.sumiu{background:transparent;color:var(--tinta-suave);border:3px dashed var(--tinta-suave);text-decoration:line-through}
+
+/* dinheiro */
+.numeros{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0 24px}
+.num{background:#1B1A10;color:#fff;border-radius:18px;padding:18px 16px}
+.num .v{font-family:var(--display);font-size:clamp(30px,8.6vw,44px);line-height:1}
+.num.sobe .v{color:#FF8B7E}
+.num.desce .v{color:#9EE6B8}
+.num p{margin:8px 0 0;font-size:16px;line-height:1.35}
+.dinheiro ul{padding-left:22px}
+.dinheiro li{margin-bottom:12px}
+
+/* quem sofre */
+.pessoas{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.pessoa{border:3px solid var(--tinta);border-radius:16px;padding:14px}
+.pessoa .v{font-family:var(--display);font-size:27px;line-height:1}
+.pessoa p{margin:6px 0 0;font-size:16px}
+
+/* propostas */
+.propostas{list-style:none;padding:0;margin:20px 0 0}
+.propostas li{padding:18px 0;border-top:3px solid rgba(255,255,255,.35)}
+.propostas li strong{display:block;font-family:var(--display);font-weight:400;font-size:23px;line-height:1.05;margin-bottom:6px;color:var(--amarelo)}
+
+
+
+/* provas */
+.provas{background:#16211B;color:#fff}
+.provas h2{color:var(--amarelo)}
+.linha-tempo{list-style:none;margin:26px 0;padding:0 0 0 22px;border-left:4px solid var(--amarelo)}
+.linha-tempo li{position:relative;margin-bottom:30px}
+.linha-tempo li::before{content:"";position:absolute;left:-33px;top:6px;width:18px;height:18px;border-radius:50%;background:var(--amarelo)}
+.linha-tempo .ano{font-family:var(--display);font-size:30px;line-height:1;color:var(--amarelo);margin-bottom:6px}
+.linha-tempo .quem{font-size:15px;color:#B9C4BC;margin-bottom:8px}
+.carimbo{display:inline-block;font-family:var(--display);font-size:17px;color:#FF6B5E;border:3px solid #FF6B5E;border-radius:6px;padding:4px 10px;transform:rotate(-3deg);margin:0 6px 8px 0}
+.grande-prova{font-family:var(--display);font-size:clamp(40px,12vw,68px);line-height:1;color:var(--amarelo);margin:6px 0}
+/* reclamacao */
+.noite{background:var(--azul);color:#fff}
+.exigencias{list-style:none;padding:0;margin:22px 0}
+.exigencias li{padding:14px 0 14px 18px;border-left:6px solid var(--amarelo);margin-bottom:12px;background:rgba(255,255,255,.06);border-radius:0}
+.exigencias strong{display:block;font-family:var(--display);font-weight:400;font-size:21px;color:var(--amarelo);margin-bottom:4px}
+.montar{background:#fff;color:#16211B;border-radius:22px;padding:22px 18px;margin-top:28px}
+.montar h3{font-family:var(--display);font-weight:400;font-size:25px;line-height:1.1;margin:0 0 14px}
+.montar label.campo{display:block;font-weight:600;margin:14px 0 6px}
+.montar input[type=text]{width:100%;font:400 18px var(--texto);padding:14px;border:2px solid #16211B;border-radius:12px;background:#fff;color:#16211B;min-height:52px}
+.problemas{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.problemas label{display:flex;align-items:center;gap:8px;border:2px solid #C9D2CC;border-radius:999px;padding:10px 14px;cursor:pointer;font-weight:600;font-size:16px}
+.problemas input{width:20px;height:20px;accent-color:var(--azul);margin:0}
+.erro{color:#B3261E;font-size:16px;font-weight:600;margin:8px 0 0;min-height:1em}
+.texto-pronto{white-space:pre-wrap;background:#F2F5F3;border:2px dashed #16211B;border-radius:14px;padding:14px;margin:16px 0;font-size:16px}
+.acoes-rec{display:flex;flex-wrap:wrap;gap:10px}
+.acoes-rec .btn{font-size:17px;padding:14px 18px}
+.btn.escuro{background:#16211B;color:#fff}
+.btn.contorno{background:transparent;color:#16211B;border:2px solid #16211B}
+.dica{font-size:16px;color:#46524A;margin:14px 0 0}
+
+/* novas secoes */
+.cartao{border:3px solid var(--tinta);border-radius:20px;padding:20px 18px;margin-top:30px}
+.cartao h3,.bolso h3{font-family:var(--display);font-weight:400;font-size:24px;line-height:1.1;margin:0 0 12px}
+.busca{display:flex;gap:10px;flex-wrap:wrap}
+.busca input{flex:1;min-width:140px;font:600 22px var(--texto);padding:12px 14px;border:3px solid var(--tinta);border-radius:14px;background:var(--papel);color:var(--tinta);min-height:56px}
+.res-linha{margin-top:16px}
+.res-linha .big{font-family:var(--display);font-size:40px;line-height:1;color:var(--vermelho)}
+.bolso .resultado{background:#fff;color:#16211B}
+.bolso .resultado .grande{color:var(--verde-escuro)}
+.bolso .escolha button{border-color:#fff;color:#fff}
+.bolso .escolha button[aria-pressed=true]{background:#fff;color:var(--verde-escuro)}
+.bolso label.rot{display:block;font-weight:700;margin:20px 0 8px}
+.direitos .dir{border-top:3px solid #1B1A10;padding:16px 0}
+.direitos .dir:last-of-type{border-bottom:3px solid #1B1A10}
+.direitos .dir strong{display:block;font-family:var(--display);font-weight:400;font-size:23px;line-height:1.1;margin-bottom:6px}
+.direitos .lei{font-size:15px;color:#4A4630;margin:6px 0 0}
+.direitos details{border:0;padding:0;margin-top:8px}
+.direitos summary{font-size:17px;padding:8px 30px 8px 0;color:#1B1A10;text-decoration:underline}
+.direitos summary::after{color:#1B1A10;font-size:24px;top:4px}
+.direitos details p{color:#1B1A10}
+.cinza{background:#ECEFEA;color:#16211B}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cinza{background:#1A231D;color:#EEF3EF}}
+:root[data-theme="dark"] .cinza{background:#1A231D;color:#EEF3EF}
+.tipo{display:inline-block;font-weight:700;font-size:14px;padding:4px 10px;border-radius:999px;margin-bottom:8px}
+.tipo.oficial{background:#16211B;color:var(--amarelo)}
+.tipo.voz{background:var(--amarelo);color:#1B1A10}
+.falha{padding:16px 0;border-top:2px solid var(--linha)}
+.falha:last-of-type{border-bottom:2px solid var(--linha)}
+.falha strong{display:block;font-size:20px;margin-bottom:4px}
+.zero .lado{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.zero .lado div{background:#1B1A10;color:#fff;border-radius:16px;padding:14px}
+.zero .lado .v{font-family:var(--display);font-size:clamp(24px,7vw,34px);line-height:1;color:var(--amarelo)}
+.zero .lado p{margin:6px 0 0;font-size:15px}
+/* acao */
+.tarefas{list-style:none;padding:0;margin:18px 0 26px}
+.tarefas li{margin-bottom:10px}
+.tarefas label{display:flex;gap:14px;align-items:flex-start;padding:14px;border:2px solid var(--linha);border-radius:14px;cursor:pointer;font-weight:700}
+.tarefas input{width:28px;height:28px;flex:none;accent-color:var(--verde);margin:0}
+.tarefas input:checked + span{text-decoration:line-through;color:var(--tinta-suave)}
+.contador{font-family:var(--display);font-size:22px;margin-bottom:18px}
+.fecho{font-family:var(--display);font-size:clamp(27px,7.4vw,42px);line-height:1.05;margin:30px 0 22px}
+.fontes{font-size:15px;color:var(--tinta-suave)}
+.fontes li{margin-bottom:6px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<filter id="aspero" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs></svg>
+
+<section class="faixa verde hero" aria-labelledby="t1">
+  <div class="miolo">
+    <svg class="ilus ilus-m" viewBox="0 0 320 256" role="img" aria-label="Ônibus de frente, em estilo de xilogravura, com o letreiro Sua casa, diante de um sol">
+      <g filter="url(#aspero)">
+        <circle cx="160" cy="120" r="126" fill="none" stroke="#FFCC29" stroke-width="16" stroke-dasharray="12 11"/>
+        <circle cx="160" cy="120" r="104" fill="#FFCC29"/>
+        <path d="M70 116 h-20 v34" fill="none" stroke="#000" stroke-width="7" stroke-linecap="round"/>
+        <path d="M250 116 h20 v34" fill="none" stroke="#000" stroke-width="7" stroke-linecap="round"/>
+        <rect x="70" y="38" width="180" height="194" rx="26" fill="#000"/>
+        <rect x="86" y="52" width="148" height="36" rx="5" fill="#FFCC29"/>
+        <text x="160" y="78" text-anchor="middle" font-family="Alfa Slab One, Georgia, serif" font-size="21" fill="#000">SUA CASA</text>
+        <rect x="86" y="98" width="148" height="66" rx="6" fill="#00843D"/>
+        <rect x="157" y="98" width="6" height="66" fill="#000"/>
+        <g stroke="#000" stroke-width="4" stroke-linecap="round"><path d="M98 156 L128 110 M114 158 L144 112 M176 156 L206 110 M192 158 L222 112"/></g>
+        <circle cx="102" cy="192" r="13" fill="#FFCC29"/><circle cx="218" cy="192" r="13" fill="#FFCC29"/>
+        <g stroke="#FFCC29" stroke-width="4" stroke-linecap="round"><path d="M132 182 H188 M132 193 H188 M132 204 H188"/></g>
+        <g stroke="#00843D" stroke-width="3" stroke-linecap="round"><path d="M78 64 v18 M78 100 v14 M242 64 v16 M242 124 v14 M96 222 h26 M200 222 h22"/></g>
+        <rect x="60" y="214" width="200" height="16" rx="6" fill="#000"/>
+        <rect x="84" y="226" width="32" height="24" rx="6" fill="#000"/><rect x="204" y="226" width="32" height="24" rx="6" fill="#000"/>
+        <path d="M18 252 H302" stroke="#000" stroke-width="5" stroke-linecap="round"/>
+      </g>
+    </svg>
+    <h1 id="t1">Somos nós que movemos a Grande Vitória.</h1>
+    <p class="sub">Mesmo assim, o transporte trata o nosso tempo como se não valesse nada.</p>
+    <a class="btn amarelo" href="#calculadora">Calcule o tempo que tiram de você</a>
+  </div>
+</section>
+
+<section id="calculadora" class="faixa amarelo calc" aria-labelledby="t2">
+  <div class="miolo">
+    <svg class="ilus ilus-p" viewBox="0 0 200 200" role="img" aria-label="Ampulheta em estilo de xilogravura">
+      <g filter="url(#aspero)">
+        <rect x="36" y="16" width="128" height="18" rx="5" fill="#000"/><rect x="36" y="166" width="128" height="18" rx="5" fill="#000"/>
+        <rect x="44" y="34" width="8" height="132" fill="#000"/><rect x="148" y="34" width="8" height="132" fill="#000"/>
+        <path d="M60 34 C60 80 96 90 96 100 C96 110 60 120 60 166 H140 C140 120 104 110 104 100 C104 90 140 80 140 34 Z" fill="none" stroke="#000" stroke-width="7" stroke-linejoin="round"/>
+        <path d="M72 58 H128 C124 78 106 86 100 96 C94 86 76 78 72 58 Z" fill="#000"/>
+        <path d="M100 100 V150" stroke="#000" stroke-width="3" stroke-dasharray="4 5"/>
+        <path d="M66 162 C80 132 120 132 134 162 Z" fill="#000"/>
+        <g stroke="#FFCC29" stroke-width="3" stroke-linecap="round"><path d="M84 66 h10 M108 70 h12 M88 152 h10 M104 146 h12"/></g>
+      </g>
+    </svg>
+    <h2 id="t2">Quanto da sua vida fica no ônibus?</h2>
+    <p>Pense no tempo que você perde a mais por dia: espera no ponto, voltas no caminho, baldeação no terminal.</p>
+
+    <label for="min">Minutos perdidos por dia, ida e volta</label>
+    <div class="valor" id="minTxt">40 min</div>
+    <input id="min" type="range" min="10" max="150" step="5" value="40">
+
+    <label id="diasRot">Dias de trabalho por semana</label>
+    <div class="escolha" role="group" aria-labelledby="diasRot">
+      <button type="button" data-d="5" aria-pressed="false">5 dias</button>
+      <button type="button" data-d="6" aria-pressed="true">6 dias</button>
+    </div>
+
+    <div class="resultado" aria-live="polite">
+      <p>Por ano, isso dá</p>
+      <div class="grande" id="horas">208 horas</div>
+      <p id="dias">São quase 9 dias inteiros, dia e noite, dentro do ônibus.</p>
+      <p class="comparar" id="comparar">É mais tempo do que muita gente tem de férias.</p>
+    </div>
+  </div>
+</section>
+
+<section class="faixa branco" aria-labelledby="t5">
+  <div class="miolo">
+    <svg class="ilus ilus-p" viewBox="0 0 200 200" role="img" aria-label="Volante de ônibus seguro por duas mãos, em estilo de xilogravura">
+      <g filter="url(#aspero)">
+        <circle cx="100" cy="100" r="72" fill="none" stroke="#000" stroke-width="18"/>
+        <circle cx="100" cy="100" r="72" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="4 20"/>
+        <circle cx="100" cy="100" r="20" fill="#000"/>
+        <path d="M100 100 L32 86 M100 100 L168 86 M100 100 V172" stroke="#000" stroke-width="12" stroke-linecap="round"/>
+        <ellipse cx="44" cy="62" rx="20" ry="26" transform="rotate(-35 44 62)" fill="#00843D" stroke="#000" stroke-width="5"/>
+        <ellipse cx="156" cy="62" rx="20" ry="26" transform="rotate(35 156 62)" fill="#00843D" stroke="#000" stroke-width="5"/>
+      </g>
+    </svg>
+    <h2 id="t5">O motorista não é seu inimigo.</h2>
+    <p>Quando o ônibus atrasa, a raiva cai em cima dele. Mas ele é um trabalhador como você, preso no mesmo sistema. Desde que tiraram os cobradores, ele faz tudo sozinho:</p>
+    <div class="funcoes" aria-label="Funções do motorista hoje">
+      <span>Dirige</span><span>Cobra</span><span>Orienta</span><span>Ajuda o idoso</span><span>Enfrenta assalto</span><span class="sumiu">Cobrador</span>
+    </div>
+    <p>Eram 7 horas e 20 minutos por dia, seis dias por semana, muitas vezes com mais duas horas extras. Em dezembro de 2025, depois de ameaça de greve, a jornada caiu para 7 horas. Foi a luta que conquistou isso.</p>
+    <p><strong>Um motorista cansado e sozinho é perigo para todos no ônibus. Cuidar dele é cuidar de você.</strong></p>
+  </div>
+</section>
+
+<section class="faixa amarelo dinheiro" aria-labelledby="t6">
+  <div class="miolo">
+    <h2 id="t6">Pagamos mais. Recebemos menos.</h2>
+    <p>Primeiros sete meses de 2026, comparados com 2025. Dados oficiais da Ceturb.</p>
+    <div class="numeros">
+      <div class="num desce"><div class="v">−4,8%</div><p>passageiros</p></div>
+      <div class="num sobe"><div class="v">+2,1%</div><p>quilômetros rodados</p></div>
+      <div class="num sobe"><div class="v">+6,6%</div><p>custo do sistema</p></div>
+      <div class="num sobe"><div class="v">+25%</div><p>dinheiro dos impostos</p></div>
+    </div>
+    <p>Em 2025, o Transcol custou <strong>R$ 1,05 bilhão</strong>. Você pagou R$ 696 milhões na catraca e mais R$ 366 milhões pelos impostos.</p>
+    <ul>
+      <li><strong>As empresas ganham por quilômetro rodado, não por passageiro bem atendido.</strong> Ônibus vazio e linha repetida não dão prejuízo para elas. Dão para nós.</li>
+      <li><strong>A Ceturb, que deveria fiscalizar, recebe 5% do subsídio.</strong> Quanto mais o subsídio cresce, mais ela ganha. Foram cerca de R$ 53 milhões em 2025, somando passagem e subsídio.</li>
+    </ul>
+    <p class="nota" style="color:#3F3D22">Isso não prova crime. Mostra um sistema em que ninguém ganha quando você chega mais cedo em casa.</p>
+  </div>
+</section>
+
+<section class="faixa branco" aria-labelledby="t3">
+  <div class="miolo">
+    <h2 id="t3">Tem ônibus que dá volta demais.</h2>
+    <p>Olhamos o mapa oficial das 412 linhas do Transcol, publicado pela própria Ceturb. Em 71 linhas, o ônibus anda o dobro ou mais do caminho direto. Escolha uma linha:</p>
+    <div class="abas" role="group" aria-label="Escolha a linha">
+      <button type="button" data-l="731" aria-pressed="true">731</button>
+      <button type="button" data-l="667" aria-pressed="false">667</button>
+      <button type="button" data-l="833" aria-pressed="false">833</button>
+      <button type="button" data-l="880" aria-pressed="false">880</button>
+    </div>
+    <div class="barra">
+      <div class="rot"><span>Caminho que o ônibus faz</span><span id="realTxt"></span></div>
+      <div class="trilho"><div class="enche real" id="realBar"></div></div>
+    </div>
+    <div class="barra">
+      <div class="rot"><span>Caminho direto</span><span id="diretoTxt"></span></div>
+      <div class="trilho"><div class="enche direto" id="diretoBar"></div></div>
+    </div>
+    <p class="frase-linha" id="fraseLinha"></p>
+    <p class="nota">Tempo calculado a 20 km por hora, velocidade comum de ônibus na cidade. Algumas voltas têm motivo, como morro ou rua sem saída. Mas quem paga cada volta é você.</p>
+    <div class="cartao">
+      <h3>Procure a sua linha</h3>
+      <label for="numLinha" style="display:block;font-weight:600;margin-bottom:8px">Digite o número da linha que você pega</label>
+      <div class="busca">
+        <input id="numLinha" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="Ex.: 507" autocomplete="off">
+        <button type="button" class="btn verde" id="verLinha">Ver minha linha</button>
+      </div>
+      <p class="erro" id="erroLinha" role="alert"></p>
+      <div class="res-linha" id="resLinha" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section class="faixa provas" aria-labelledby="t11">
+  <div class="miolo">
+    <h2 id="t11">Não somos só nós que dizemos. Os fiscais do próprio Estado já disseram.</h2>
+    <p>O Tribunal de Contas (TCE-ES) e o Ministério Público de Contas (MPC-ES) são os órgãos que fiscalizam o uso do dinheiro público no Espírito Santo. Veja o que eles encontraram no Transcol:</p>
+    <ul class="linha-tempo">
+      <li>
+        <div class="ano">2015</div>
+        <div class="quem">Ministério Público de Contas e Tribunal de Contas</div>
+        <span class="carimbo">16 indícios de irregularidade</span>
+        <p>O MPC apontou 16 indícios de irregularidade na licitação que entregou o Transcol aos consórcios. As próprias empresas controlavam o caixa que divide o dinheiro das passagens e do subsídio. O Tribunal mandou a Ceturb tomar esse controle de volta.</p>
+      </li>
+      <li>
+        <div class="ano">2023</div>
+        <div class="quem">Auditoria do Tribunal de Contas, processo 8313/2022</div>
+        <span class="carimbo">Dados não divulgados</span><span class="carimbo">Canal de reclamação falho</span><span class="carimbo">Bilhetagem sem auditoria</span>
+        <p>Os auditores encontraram: indicadores de qualidade não divulgados ao público, canal de reclamação deficiente e nenhuma auditoria independente do sistema de bilhetagem, que conta quem passa na catraca.</p>
+      </li>
+      <li>
+        <div class="ano">2026</div>
+        <div class="quem">Parecer do Ministério Público de Contas, processo 5819/2025</div>
+        <div class="grande-prova">R$ 1,56 bilhão</div>
+        <p>Foi o que o Estado pagou aos dois consórcios entre 2015 e 2024. O valor por ano saltou de R$ 106 milhões para R$ 354 milhões, mais que triplicou.</p>
+        <p>Segundo o parecer, o Estado assume custos que pelo contrato seriam das empresas. O plano dos ônibus elétricos prevê que o governo pague dois terços de cada veículo, cerca de R$ 133 milhões para empresas privadas, sem estudo mostrando que era a melhor escolha. Para o MPC, nesse modelo o risco fica com o povo e o lucro fica com as empresas.</p>
+        <p>O parecer lembra que houve seis auditorias no Transcol entre 2006 e 2025, com problemas que se repetem. E recomendou que o governo estude a Tarifa Zero. O caso ainda será votado no Tribunal de Contas.</p>
+      </li>
+    </ul>
+    <p><strong>Isso não é boato. Está em documento oficial, assinado por quem tem o dever de fiscalizar.</strong></p>
+  </div>
+</section>
+
+<section class="faixa cinza" aria-labelledby="t14">
+  <div class="miolo">
+    <h2 id="t14">O que as empresas não cumprem.</h2>
+    <p>As empresas recebem um contrato de 35 anos para prestar um serviço público. Veja o que aparece nos documentos oficiais e na voz de quem anda de ônibus:</p>
+    <div class="falha"><span class="tipo oficial">Documento oficial</span><strong>Pedido de mais dinheiro com erros</strong>O Tribunal de Contas encontrou inconsistências no pedido de revisão que as próprias empresas fizeram para receber mais.</div>
+    <div class="falha"><span class="tipo oficial">Documento oficial</span><strong>Frota nova paga com dinheiro público</strong>Pelos contratos, renovar os ônibus é obrigação só das empresas. Mesmo assim, o Estado pretende gastar R$ 150 milhões com isso, segundo o Ministério Público de Contas.</div>
+    <div class="falha"><span class="tipo oficial">Documento oficial</span><strong>Ônibus articulados velhos</strong>Na planilha oficial de 2026, os ônibus articulados do Consórcio Sudoeste têm em média 9 anos de uso, bem mais que o resto da frota.</div>
+    <div class="falha"><span class="tipo oficial">Documento oficial</span><strong>Passagem mais cara</strong>A tarifa subiu para R$ 5,10 em janeiro de 2026, com base no aumento do custo por quilômetro de R$ 9,60 para R$ 10,10.</div>
+    <div class="falha"><span class="tipo voz">Voz do passageiro</span><strong>Menos passageiros, ônibus ainda lotados</strong>Em 2025, o número de passageiros caiu ao nível de 20 anos atrás. Mesmo assim, os ônibus seguem lotados nos horários de pico. Na Serra, usuários das linhas 501, 874 e 516 relataram superlotação diária.</div>
+    <div class="falha"><span class="tipo voz">Voz do passageiro</span><strong>Calor e acessibilidade quebrada</strong>Há relatos frequentes de ar-condicionado sem funcionar e de elevadores para cadeira de rodas quebrados.</div>
+    <div class="falha"><span class="tipo voz">Voz do passageiro</span><strong>Periferia esquecida no fim de semana</strong>Movimentos sociais denunciam frota malconservada e menos ônibus nos fins de semana em bairros de Serra, Cariacica e Vila Velha.</div>
+  </div>
+</section>
+
+<section class="faixa verde bolso" aria-labelledby="t12">
+  <div class="miolo">
+    <h2 id="t12">Quanto a passagem pesa no seu bolso?</h2>
+    <p>A passagem do Transcol custa R$ 5,10 desde janeiro de 2026.</p>
+    <label class="rot" id="passRot">Quantas passagens você paga por dia?</label>
+    <div class="escolha" role="group" aria-labelledby="passRot" id="passagens">
+      <button type="button" data-p="1" aria-pressed="false">1</button>
+      <button type="button" data-p="2" aria-pressed="true">2</button>
+      <button type="button" data-p="4" aria-pressed="false">4</button>
+    </div>
+    <label class="rot" id="diasBolsoRot">Quantos dias por semana?</label>
+    <div class="escolha" role="group" aria-labelledby="diasBolsoRot" id="diasBolso">
+      <button type="button" data-d="5" aria-pressed="false">5 dias</button>
+      <button type="button" data-d="6" aria-pressed="true">6 dias</button>
+      <button type="button" data-d="7" aria-pressed="false">Todo dia</button>
+    </div>
+    <div class="resultado" aria-live="polite">
+      <p>Por mês, você gasta</p>
+      <div class="grande" id="gastoMes">R$ 265</div>
+      <p id="gastoPct">É 16% de um salário mínimo de R$ 1.621.</p>
+      <p class="comparar" style="color:#46524A;border-top-color:#C9D2CC">Com carteira assinada, a lei limita o seu desconto de vale-transporte a 6% do salário, e a empresa paga o resto. Mas quem é autônomo, informal ou está procurando emprego paga tudo do próprio bolso.</p>
+    </div>
+  </div>
+</section>
+
+<section class="faixa branco" aria-labelledby="t7">
+  <div class="miolo">
+    <h2 id="t7">Quem sofre primeiro.</h2>
+    <p>Viagens feitas em 2025 por quem tem passagem gratuita ou meia passagem:</p>
+    <div class="pessoas">
+      <div class="pessoa"><div class="v">14,3 mi</div><p>viagens de idosos</p></div>
+      <div class="pessoa"><div class="v">11,1 mi</div><p>viagens de estudantes</p></div>
+      <div class="pessoa"><div class="v">2,8 mi</div><p>viagens de pessoas com deficiência</p></div>
+      <div class="pessoa"><div class="v">À noite</div><p>as mulheres enfrentam ponto escuro, espera longa e assédio</p></div>
+    </div>
+    <p>Para o idoso, esperar de pé no sol é sofrimento. Para a pessoa com deficiência, ônibus sem cobrador pode significar ficar sem ajuda.</p>
+  </div>
+</section>
+
+<section class="faixa azul poder" aria-labelledby="t4">
+  <div class="miolo">
+    <svg class="ilus ilus-m" viewBox="0 0 340 200" role="img" aria-label="Multidão com punhos erguidos, em estilo de xilogravura">
+      <g filter="url(#aspero)" fill="#fff"><rect x="71" y="78" width="26" height="76" rx="8"/><rect x="61" y="50" width="46" height="42" rx="12"/><circle cx="67.0" cy="52" r="7"/><circle cx="78.3" cy="52" r="7"/><circle cx="89.6" cy="52" r="7"/><circle cx="100.9" cy="52" r="7"/><path d="M72 58 V70 M83 58 V70 M94 58 V70" stroke="#002776" stroke-width="3" stroke-linecap="round"/><path d="M64 78 H90" stroke="#002776" stroke-width="4" stroke-linecap="round"/><rect x="147" y="56" width="26" height="98" rx="8"/><rect x="137" y="28" width="46" height="42" rx="12"/><circle cx="143.0" cy="30" r="7"/><circle cx="154.3" cy="30" r="7"/><circle cx="165.6" cy="30" r="7"/><circle cx="176.9" cy="30" r="7"/><path d="M148 36 V48 M159 36 V48 M170 36 V48" stroke="#002776" stroke-width="3" stroke-linecap="round"/><path d="M140 56 H166" stroke="#002776" stroke-width="4" stroke-linecap="round"/><rect x="223" y="78" width="26" height="76" rx="8"/><rect x="213" y="50" width="46" height="42" rx="12"/><circle cx="219.0" cy="52" r="7"/><circle cx="230.3" cy="52" r="7"/><circle cx="241.6" cy="52" r="7"/><circle cx="252.9" cy="52" r="7"/><path d="M224 58 V70 M235 58 V70 M246 58 V70" stroke="#002776" stroke-width="3" stroke-linecap="round"/><path d="M216 78 H242" stroke="#002776" stroke-width="4" stroke-linecap="round"/><circle cx="20" cy="150" r="14"/><ellipse cx="20" cy="192" rx="23" ry="30"/><circle cx="60" cy="150" r="14"/><ellipse cx="60" cy="192" rx="23" ry="30"/><circle cx="100" cy="150" r="14"/><ellipse cx="100" cy="192" rx="23" ry="30"/><circle cx="140" cy="150" r="14"/><ellipse cx="140" cy="192" rx="23" ry="30"/><circle cx="180" cy="150" r="14"/><ellipse cx="180" cy="192" rx="23" ry="30"/><circle cx="220" cy="150" r="14"/><ellipse cx="220" cy="192" rx="23" ry="30"/><circle cx="260" cy="150" r="14"/><ellipse cx="260" cy="192" rx="23" ry="30"/><circle cx="300" cy="150" r="14"/><ellipse cx="300" cy="192" rx="23" ry="30"/><circle cx="40" cy="166" r="13" fill="#FFCC29"/><ellipse cx="40" cy="206" rx="22" ry="28" fill="#FFCC29"/><circle cx="80" cy="166" r="13" fill="#FFCC29"/><ellipse cx="80" cy="206" rx="22" ry="28" fill="#FFCC29"/><circle cx="120" cy="166" r="13" fill="#FFCC29"/><ellipse cx="120" cy="206" rx="22" ry="28" fill="#FFCC29"/><circle cx="160" cy="166" r="13" fill="#FFCC29"/><ellipse cx="160" cy="206" rx="22" ry="28" fill="#FFCC29"/><circle cx="200" cy="166" r="13" fill="#FFCC29"/><ellipse cx="200" cy="206" rx="22" ry="28" fill="#FFCC29"/><circle cx="240" cy="166" r="13" fill="#FFCC29"/><ellipse cx="240" cy="206" rx="22" ry="28" fill="#FFCC29"/><circle cx="280" cy="166" r="13" fill="#FFCC29"/><ellipse cx="280" cy="206" rx="22" ry="28" fill="#FFCC29"/></g>
+    </svg>
+    <h2 id="t4">Você tem mais poder do que imagina.</h2>
+    <blockquote>Todo o poder emana do povo.<small>Constituição do Brasil, artigo 1º</small></blockquote>
+    <p>Governo, prefeito, deputado e empresa de ônibus existem para servir o povo. Não o contrário.</p>
+
+    <details>
+      <summary>Transporte é direito, não favor</summary>
+      <p>Desde 2015, a Constituição coloca o transporte ao lado da saúde, da educação e da moradia. Essa conquista veio depois que milhões de brasileiros foram às ruas em 2013. Quando o povo se junta, a lei muda.</p>
+    </details>
+    <details>
+      <summary>O Transcol é do povo</summary>
+      <p>As empresas não são donas das linhas. O Governo do Estado, pela Ceturb, contrata essas empresas para prestar um serviço que é de todos nós. Quem paga, na catraca e nos impostos, é você. Quem paga tem o direito de cobrar.</p>
+    </details>
+    <details>
+      <summary>O que é subsídio</summary>
+      <p>É o dinheiro que o governo tira dos impostos para completar o que a passagem não cobre. Não é dinheiro do governo. É dinheiro seu, que deveria voltar para você em forma de ônibus bom.</p>
+    </details>
+    <details>
+      <summary>Suas ferramentas</summary>
+      <p>Juntar-se na associação de moradores, no sindicato, na igreja ou no coletivo do bairro. Pedir dados pela Lei de Acesso à Informação, de graça. Reclamar na Ouvidoria e no Ministério Público. Ir às audiências públicas. Votar e cobrar depois.</p>
+    </details>
+  </div>
+</section>
+
+<section class="faixa amarelo direitos" aria-labelledby="t13">
+  <div class="miolo">
+    <h2 id="t13">Seus direitos de passageiro.</h2>
+    <p>Você não é só passageiro. Para a lei, você também é consumidor de um serviço público. E tem direitos que pode cobrar.</p>
+    <div class="dir">
+      <strong>Serviço adequado</strong>
+      O ônibus tem que ser regular, contínuo, eficiente, seguro, moderno, educado com você e ter preço justo.
+      <p class="lei">Lei das Concessões, nº 8.987/1995, artigo 6º</p>
+      <details><summary>Como cobrar</summary><p>Toda vez que o ônibus atrasar, não passar, vier lotado demais ou quebrado, registre reclamação na Ouvidoria. Cada registro prova que o serviço não é adequado.</p></details>
+    </div>
+    <div class="dir">
+      <strong>Informação no ponto</strong>
+      Você tem direito a saber, no próprio ponto, de graça, quais linhas passam, os horários, o itinerário e o preço.
+      <p class="lei">Política Nacional de Mobilidade Urbana, Lei nº 12.587/2012, artigo 14</p>
+      <details><summary>Como cobrar</summary><p>Se o seu ponto não tem essa informação, fotografe e reclame. É um direito previsto em lei federal, não um favor.</p></details>
+    </div>
+    <div class="dir">
+      <strong>Segurança e acessibilidade</strong>
+      O transporte tem que ser seguro e acessível para todos, inclusive para quem usa cadeira de rodas, tem pouca visão ou dificuldade para andar.
+      <p class="lei">Lei nº 12.587/2012, artigo 14</p>
+      <details><summary>Como cobrar</summary><p>Elevador quebrado, ponto sem rampa, terminal sem piso tátil: tudo isso pode ser denunciado na Ouvidoria e no Ministério Público.</p></details>
+    </div>
+    <div class="dir">
+      <strong>Assento reservado para idosos</strong>
+      Pelo menos 10% dos assentos devem ser reservados para pessoas idosas, com identificação.
+      <p class="lei">Estatuto da Pessoa Idosa, Lei nº 10.741/2003, artigo 39</p>
+    </div>
+    <div class="dir">
+      <strong>Participar e fiscalizar</strong>
+      O povo tem direito de participar do planejamento, da fiscalização e da avaliação do transporte da sua cidade.
+      <p class="lei">Lei nº 12.587/2012, artigo 14</p>
+      <details><summary>Como cobrar</summary><p>Peça para participar das audiências públicas e dos conselhos de transporte. Se não houver espaço para o povo falar, isso também é descumprimento da lei.</p></details>
+    </div>
+    <div class="dir">
+      <strong>Saber como reclamar</strong>
+      Você tem direito de ser informado, em linguagem simples, sobre seus direitos, os deveres das empresas, os padrões de qualidade e os prazos de resposta às reclamações.
+      <p class="lei">Lei nº 12.587/2012, artigo 14</p>
+    </div>
+  </div>
+</section>
+
+<section class="faixa noite" aria-labelledby="t10">
+  <div class="miolo">
+    <svg class="ilus ilus-m" viewBox="0 0 320 200" role="img" aria-label="Ponto de ônibus à noite com um banco sob um poste de luz e a lua, em estilo de xilogravura">
+      <g filter="url(#aspero)">
+        <circle cx="262" cy="46" r="26" fill="#FFCC29"/><circle cx="276" cy="36" r="24" fill="#002776"/>
+        <g fill="#fff"><circle cx="40" cy="30" r="3"/><circle cx="96" cy="18" r="2.5"/><circle cx="200" cy="24" r="3"/><circle cx="150" cy="44" r="2"/><circle cx="300" cy="96" r="2.5"/></g>
+        <path d="M92 58 L40 186 H150 Z" fill="#fff" opacity=".16"/>
+        <rect x="86" y="44" width="8" height="146" fill="#fff"/>
+        <path d="M78 44 H108 L102 60 H84 Z" fill="#fff"/>
+        <rect x="170" y="80" width="130" height="10" fill="#fff"/><rect x="176" y="90" width="6" height="100" fill="#fff"/><rect x="288" y="90" width="6" height="100" fill="#fff"/>
+        <rect x="190" y="150" width="84" height="9" rx="3" fill="#FFCC29"/><rect x="196" y="159" width="6" height="26" fill="#FFCC29"/><rect x="262" y="159" width="6" height="26" fill="#FFCC29"/>
+        <path d="M14 190 H306" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+      </g>
+    </svg>
+    <h2 id="t10">Sua reclamação muda o ponto de ônibus.</h2>
+    <p>Ponto sem cobertura. Terminal sem banco. Rua escura à noite. Isso não é normal, e ninguém precisa aceitar calado.</p>
+    <p><strong>Cada reclamação registrada vira um documento oficial.</strong> Uma pessoa reclamando é um caso. Cem pessoas reclamando do mesmo ponto é prova. E prova obriga o governo a responder.</p>
+    <ul class="exigencias">
+      <li><strong>Bancos para quem precisa</strong>Idosos, gestantes, pessoas com deficiência e quem volta exausto do trabalho não podem esperar de pé nos terminais.</li>
+      <li><strong>Luz e segurança à noite</strong>Ponto iluminado, câmeras e policiamento nos horários de maior perigo, para quem espera e para quem desce do ônibus.</li>
+      <li><strong>Proteção para quem trabalha</strong>O motorista e o fiscal do último ônibus da noite também correm risco. A segurança deles é a nossa.</li>
+      <li><strong>Cobertura contra sol e chuva</strong>Ninguém deveria chegar ao trabalho molhado ou passar mal no calor esperando o ônibus.</li>
+      <li><strong>Horário à vista</strong>Saber quando o ônibus vem é o mínimo para planejar a vida.</li>
+    </ul>
+
+    <div class="montar">
+      <h3>Monte sua reclamação em 1 minuto</h3>
+      <label class="campo" for="local">Onde fica o ponto ou terminal?</label>
+      <input type="text" id="local" placeholder="Rua e bairro, ou nome do terminal" autocomplete="off">
+      <p class="campo" style="font-weight:600;margin:16px 0 6px">O que está errado?</p>
+      <div class="problemas" id="problemas">
+        <label><input type="checkbox" value="não há bancos suficientes para idosos e pessoas com deficiência">Faltam bancos</label>
+        <label><input type="checkbox" value="o local é escuro e sem iluminação à noite">Escuro à noite</label>
+        <label><input type="checkbox" value="o local é inseguro, com risco de assalto para passageiros e trabalhadores">Inseguro</label>
+        <label><input type="checkbox" value="não há cobertura contra sol e chuva">Sem cobertura</label>
+        <label><input type="checkbox" value="não há informação de horário dos ônibus">Sem horário</label>
+        <label><input type="checkbox" value="a espera pelo ônibus é longa demais">Espera longa</label>
+      </div>
+      <p class="erro" id="erro" role="alert"></p>
+      <button type="button" class="btn escuro" id="montarBtn">Montar reclamação</button>
+      <div id="saida" hidden>
+        <div class="texto-pronto" id="textoPronto"></div>
+        <div class="acoes-rec">
+          <button type="button" class="btn verde" id="copiar">Copiar texto</button>
+          <a class="btn contorno" href="https://ouvidoria.es.gov.br/" target="_blank" rel="noopener">Abrir a Ouvidoria do Estado</a>
+          <a class="btn contorno" id="zapRec" href="#" target="_blank" rel="noopener">Mandar no WhatsApp</a>
+        </div>
+        <p class="dica">Dica: tire uma foto do local e anexe. Guarde o número do protocolo. Se não responderem, reclame de novo e procure o Ministério Público.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faixa amarelo zero" aria-labelledby="t15">
+  <div class="miolo">
+    <h2 id="t15">Tarifa Zero: é possível?</h2>
+    <p><strong>O que é:</strong> ônibus sem catraca, pago com dinheiro público, como a escola e o posto de saúde. Você não paga na hora de entrar, porque já pagou nos impostos.</p>
+    <p><strong>Já existe:</strong> mais de 130 cidades brasileiras têm alguma forma de Tarifa Zero. A maioria são cidades menores, com menos de 50 mil habitantes.</p>
+    <p><strong>Quem pediu para estudar:</strong> o próprio Ministério Público de Contas do Espírito Santo, em junho de 2026. Para ele, o Estado já paga boa parte do Transcol e não recebe a qualidade em troca.</p>
+    <div class="lado">
+      <div><div class="v">R$ 696 mi</div><p>pagos pelo povo na catraca em 2025</p></div>
+      <div><div class="v">R$ 366 mi</div><p>pagos pelo Estado em subsídio em 2025</p></div>
+    </div>
+    <p><strong>Os desafios, com honestidade:</strong> custaria perto de R$ 700 milhões a mais por ano ao Estado, que precisaria de uma fonte de dinheiro estável. Com passagem livre, mais gente anda de ônibus, e sem mais ônibus a lotação pode piorar. Por isso o MPC pediu um estudo sério, com fiscalização e metas de qualidade, e não uma mudança da noite para o dia.</p>
+    <p class="fecho" style="margin-top:22px">A pergunta não é se é possível. É quem decide para onde vai o nosso dinheiro.</p>
+  </div>
+</section>
+
+<section class="faixa verde" aria-labelledby="t8">
+  <div class="miolo">
+    <svg class="ilus ilus-p" viewBox="0 0 200 220" role="img" aria-label="Placa de ponto de ônibus marcando 30 minutos, em estilo de xilogravura">
+      <g filter="url(#aspero)">
+        <path d="M118 104 H194 V114 H118 Z" fill="#000"/><rect x="126" y="114" width="6" height="96" fill="#000"/><rect x="180" y="114" width="6" height="96" fill="#000"/>
+        <rect x="132" y="170" width="48" height="8" fill="#000"/>
+        <rect x="70" y="70" width="10" height="140" fill="#000"/>
+        <circle cx="75" cy="66" r="54" fill="#FFCC29" stroke="#000" stroke-width="7"/>
+        <text x="75" y="62" text-anchor="middle" font-family="Alfa Slab One, Georgia, serif" font-size="30" fill="#000">30</text>
+        <text x="75" y="88" text-anchor="middle" font-family="Alfa Slab One, Georgia, serif" font-size="16" fill="#000">min</text>
+        <path d="M40 210 H196" stroke="#000" stroke-width="5" stroke-linecap="round"/>
+      </g>
+    </svg>
+    <h2 id="t8">O transporte que a gente quer.</h2>
+    <p>Chegar em casa em 30 minutos, não em uma hora e meia. Outras cidades já fizeram.</p>
+    <ul class="propostas">
+      <li><strong>Pagar pelo serviço bem feito</strong>Em Belo Horizonte, a empresa só recebe o dinheiro público se cumprir os horários.</li>
+      <li><strong>Dados nas mãos do povo</strong>O Rio de Janeiro tirou a bilhetagem das empresas. Aqui, os números de cada linha deveriam estar na internet, todo mês.</li>
+      <li><strong>Linhas curtas e rápidas</strong>Micro-ônibus dentro dos bairros levando até uma linha principal que passe toda hora. Troca de ônibus pelo cartão em qualquer ponto.</li>
+      <li><strong>Fim das linhas repetidas</strong>Duas linhas no mesmo caminho a cada 30 minutos viram uma a cada 15, pelo mesmo preço.</li>
+      <li><strong>Respeito a quem trabalha</strong>Jornada humana, segurança e alguém além do motorista nas linhas mais cheias.</li>
+      <li><strong>Pontos e terminais dignos</strong>Cobertura, luz, bancos suficientes para idosos e gestantes, câmeras e segurança à noite para quem espera e para quem trabalha.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="faixa branco" aria-labelledby="t9">
+  <div class="miolo">
+    <h2 id="t9">Faça sua parte hoje.</h2>
+    <div class="contador" id="contador" aria-live="polite">0 de 6 feitas</div>
+    <ul class="tarefas" id="tarefas">
+      <li><label><input type="checkbox"><span>Mandar esta página para cinco pessoas que pegam ônibus</span></label></li>
+      <li><label><input type="checkbox"><span>Levar o assunto para a associação de moradores, a igreja ou o sindicato</span></label></li>
+      <li><label><input type="checkbox"><span>Pedir os dados das linhas do seu bairro em acessoainformacao.es.gov.br</span></label></li>
+      <li><label><input type="checkbox"><span>Reclamar na Ouvidoria do Estado quando o ônibus falhar</span></label></li>
+      <li><label><input type="checkbox"><span>Perguntar a quem pede seu voto o que vai fazer pelo transporte, e cobrar depois</span></label></li>
+      <li><label><input type="checkbox"><span>Tratar o motorista com respeito. Ele está do nosso lado</span></label></li>
+    </ul>
+    <a class="btn verde" id="zap" href="#">Enviar pelo WhatsApp</a>
+    <p class="fecho">Sozinho, você é um passageiro reclamando. Juntos, somos a força que move a Grande Vitória.</p>
+
+    <h2 style="font-size:28px;margin-top:40px">Fontes</h2>
+    <ul class="fontes">
+      <li><a href="https://ceturb.es.gov.br/dados-operacionais">Dados operacionais do Transcol 2025 e 2026, Ceturb-ES</a></li>
+      <li><a href="https://github.com/ceturb-niad/itinerarios_transcol">Itinerários oficiais das linhas, Ceturb-ES</a></li>
+      <li><a href="https://www.seculodiario.com.br/cidades/rodoviarios-da-grande-vitoria-aprovam-paralisacao-para-a-proxima-terca-feira/">Rodoviários aprovam paralisação, Século Diário, dez/2025</a></li>
+      <li><a href="https://www.seculodiario.com.br/direitos/rodoviarios-aceitam-acordo-e-suspendem-greve-desta-quinta-feira/">Rodoviários aceitam acordo, Século Diário, dez/2025</a></li>
+      <li><a href="https://onibusetransporte.com/espirito-santo/ceturb-es/transcol-gv/">Notícias do Transcol GV, Ônibus &amp; Transporte</a></li>
+      <li><a href="https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc90.htm">Emenda Constitucional 90, transporte como direito social</a></li>
+      <li><a href="https://www.em.com.br/gerais/2025/12/7323649-subsidio-ao-transporte-publico-de-bh-sera-de-rs-7569-milhoes-em-2026.html">Subsídio do transporte em Belo Horizonte, Estado de Minas</a></li>
+      <li><a href="https://www.mpc.es.gov.br/2026/06/mpc-es-defende-tarifa-zero-no-transcol-apos-auditoria-apontar-falhas-parecer-mostra-gastos-de-r-15-bi-do-estado-com-sistema/">Parecer do MPC-ES no processo 5819/2025, junho de 2026</a></li>
+      <li><a href="https://www.mpc.es.gov.br/2023/09/desrespeito-aos-contratos-de-transporte-coletivo-urbano-do-sistema-transcol-e-evidenciado-em-fiscalizacao-do-tce-es/">Auditoria do TCE-ES nos contratos do Transcol, processo 8313/2022</a></li>
+      <li><a href="https://www.mpc.es.gov.br/2015/03/transcol-conselheiro-determina-que-ceturb-gv-reassuma-operacao-da-camara-de-compensacao-tarifaria/">TCE-ES manda Ceturb reassumir a câmara de compensação, 2015</a></li>
+      <li><a href="https://www.planalto.gov.br/ccivil_03/leis/l8987cons.htm">Lei das Concessões, nº 8.987/1995</a></li>
+      <li><a href="https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12587.htm">Política Nacional de Mobilidade Urbana, Lei nº 12.587/2012</a></li>
+      <li><a href="https://www.planalto.gov.br/ccivil_03/leis/2003/l10.741.htm">Estatuto da Pessoa Idosa, Lei nº 10.741/2003</a></li>
+      <li><a href="https://idec.org.br/dicas-e-direitos/saiba-o-que-fazer-veja-como-reclamar-e-encontrar-solucoes-no-transporte-publico">Direitos no transporte público, Idec</a></li>
+      <li><a href="https://www.seculodiario.com.br/direitos/tarifa-do-transcol-sobe-para-r-510-e-gera-protesto-em-vitoria/">Tarifa do Transcol sobe para R$ 5,10, Século Diário, jan/2026</a></li>
+      <li><a href="https://www.agazeta.com.br/editorial/transcol-menos-passageiros-alguns-avancos-as-mesmas-reclamacoes-0326">Transcol: menos passageiros, as mesmas reclamações, A Gazeta, 2026</a></li>
+      <li><a href="https://www.portaltemponovo.com.br/passageiros-do-transcol-reclamam-de-superlotacao-nos-onibus-que-circulam-pela-es-010-na-serra/">Superlotação na ES-010, Tempo Novo, 2024</a></li>
+      <li><a href="https://www.seculodiario.com.br/direitos/sob-protestos-por-passe-livre-tarifa-do-transcol-sobe-para-r-490/">Elevadores quebrados e superlotação, Século Diário, 2025</a></li>
+      <li><a href="https://tagteam.harvard.edu/hub_feeds/3884/feed_items/13580158">Cidades com subsídio e Tarifa Zero (dados da NTU), JOTA, 2025</a></li>
+      <li><a href="https://blog.convenia.com.br/novo-salario-minimo/">Salário mínimo de 2026, Decreto nº 12.797/2025</a></li>
+    </ul>
+  </div>
+</section>
+
+<script>
+(function(){
+  var min=document.getElementById('min'), dias=6;
+  function fmt(n){return n.toLocaleString('pt-BR')}
+  function calc(){
+    var m=+min.value;
+    document.getElementById('minTxt').textContent=m+' min';
+    var horas=Math.round(m*dias*52/60);
+    var d=horas/24;
+    document.getElementById('horas').textContent=fmt(horas)+' horas';
+    var dTxt=d<1?'Quase um dia inteiro, dia e noite, dentro do ônibus.':
+      'São '+(Math.round(d)===1?'1 dia inteiro':(Math.round(d)+' dias inteiros'))+', dia e noite, dentro do ônibus.';
+    document.getElementById('dias').textContent=dTxt;
+    var jorn=Math.round(horas/8);
+    document.getElementById('comparar').textContent='É o mesmo que '+fmt(jorn)+' dias de trabalho de 8 horas, sem receber nada por isso.';
+  }
+  min.addEventListener('input',calc);
+  document.querySelectorAll('.calc .escolha button').forEach(function(b){
+    b.addEventListener('click',function(){
+      dias=+b.dataset.d;
+      document.querySelectorAll('.calc .escolha button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+      calc();
+    });
+  });
+  calc();
+
+  var L={'731':[16.1,4.2],'667':[22.7,6.2],'833':[12.7,3.6],'880':[31.6,9.8]};
+  function linha(id){
+    var r=L[id][0], s=L[id][1], max=31.6;
+    document.getElementById('realBar').style.width=(r/max*100)+'%';
+    document.getElementById('diretoBar').style.width=(s/max*100)+'%';
+    document.getElementById('realTxt').textContent=String(r).replace('.',',')+' km, ~'+Math.round(r*3)+' min';
+    document.getElementById('diretoTxt').textContent=String(s).replace('.',',')+' km, ~'+Math.round(s*3)+' min';
+    var x=(r/s).toFixed(1).replace('.',',');
+    document.getElementById('fraseLinha').textContent='A linha '+id+' roda '+x+' vezes o caminho direto. São '+(Math.round(r*3)-Math.round(s*3))+' minutos a mais para quem vai de ponta a ponta.';
+    document.querySelectorAll('.abas button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.l===id?'true':'false')});
+  }
+  document.querySelectorAll('.abas button').forEach(function(b){b.addEventListener('click',function(){linha(b.dataset.l)})});
+  linha('731');
+
+  var boxes=[].slice.call(document.querySelectorAll('#tarefas input'));
+  var salvo=[];
+  try{salvo=JSON.parse(localStorage.getItem('tarefas-transcol')||'[]')}catch(e){salvo=[]}
+  boxes.forEach(function(b,i){b.checked=!!salvo[i];b.addEventListener('change',conta)});
+  function conta(){
+    var n=boxes.filter(function(b){return b.checked}).length;
+    document.getElementById('contador').textContent=n===6?'6 de 6 feitas. Obrigado por lutar junto.':n+' de 6 feitas';
+    try{localStorage.setItem('tarefas-transcol',JSON.stringify(boxes.map(function(b){return b.checked})))}catch(e){}
+  }
+  conta();
+
+  var local=document.getElementById('local'), erro=document.getElementById('erro');
+  local.addEventListener('input',function(){erro.textContent=''});
+  document.getElementById('montarBtn').addEventListener('click',function(){
+    var l=local.value.trim();
+    var ps=[].slice.call(document.querySelectorAll('#problemas input:checked')).map(function(i){return i.value});
+    if(!l){erro.textContent='Escreva onde fica o ponto ou terminal.';local.focus();return}
+    if(!ps.length){erro.textContent='Marque pelo menos um problema.';return}
+    var lista=ps.length===1?ps[0]:ps.slice(0,-1).join('; ')+'; e '+ps[ps.length-1];
+    var t='Venho registrar reclamação sobre o ponto de ônibus ou terminal localizado em '+l+'. Problemas encontrados: '+lista+'.\n\nO transporte é um direito social garantido pelo artigo 6º da Constituição Federal. Peço providências e uma resposta com prazo.';
+    document.getElementById('textoPronto').textContent=t;
+    document.getElementById('zapRec').href='https://wa.me/?text='+encodeURIComponent(t);
+    document.getElementById('saida').hidden=false;
+  });
+  document.getElementById('copiar').addEventListener('click',function(){
+    var b=this, t=document.getElementById('textoPronto').textContent;
+    function ok(){b.textContent='Texto copiado';setTimeout(function(){b.textContent='Copiar texto'},2500)}
+    try{navigator.clipboard.writeText(t).then(ok,function(){fallback()})}catch(e){fallback()}
+    function fallback(){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){b.textContent='Segure no texto para copiar'}document.body.removeChild(a)}
+  });
+
+  var LINHAS={"010":[32.7,0.0,"130",68],"015":[4.5,0.0,"102",35],"022":[23.4,0.0,"310",42],"031":[28.4,0.0,"212",60],"044":[24.1,0.0,"331",61],"051":[23.8,0.0,"052",94],"052":[23.6,0.0,"051",93],"071":[25.0,0.0,"072",90],"072":[24.8,0.0,"071",88],"073":[14.6,0.0,"074",69],"074":[22.1,0.0,"073",66],"101":[22.0,0.0,"151",68],"102":[23.2,0.0,"122",66],"103":[44.5,0.0,"121",65],"104":[21.9,0.0,"122",67],"111":[28.5,0.0,"103",91],"112":[30.8,0.1,"103",75],"121":[51.7,0.0,"161",77],"122":[33.8,0.0,"123",72],"123":[32.8,0.0,"122",99],"124":[37.9,0.1,"130",78],"125":[25.6,0.0,"130",65],"130":[41.5,0.0,"072",67],"151":[25.6,0.0,"517",70],"161":[41.8,0.0,"121",77],"163":[30.9,0.0,"516",70],"164":[42.7,0.1,"161",76],"171":[22.0,0.0,"175",81],"172":[21.1,0.1,"536",77],"173":[16.2,0.0,"181",81],"175":[24.1,0.0,"171",75],"181":[34.1,0.0,"130",51],"182":[19.9,0.0,"103",80],"184":[24.6,0.0,"164",83],"201":[23.5,0.0,"202",75],"202":[24.2,0.0,"201",72],"203":[22.1,0.0,"213",82],"204":[10.9,0.0,"051",51],"211":[61.8,0.0,"212",62],"212":[47.4,0.0,"211",67],"213":[42.9,0.0,"212",64],"214":[30.3,0.0,"212",40],"241":[46.3,0.0,"161",65],"302":[29.0,0.0,"535",77],"310":[38.7,0.0,"302",53],"331":[28.1,0.0,"333",84],"333":[32.4,0.0,"331",90],"370":[34.5,0.0,"211",76],"400":[5.4,3.6,"563",75],"401":[8.6,7.3,"403",97],"402":[1.1,1.0,"403",88],"403":[9.1,7.8,"401",89],"500":[20.2,8.4,"536",74],"501":[37.6,28.9,"551",99],"502":[33.6,18.9,"505",93],"503":[35.1,17.0,"568",70],"504":[38.1,26.1,"562",69],"505":[32.8,18.9,"502",89],"506":[28.9,19.1,"504",83],"507":[26.1,18.0,"503",60],"508":[32.9,23.0,"560",90],"509":[27.5,18.4,"511",97],"510":[19.3,12.7,"508",99],"511":[26.7,18.4,"509",100],"512":[26.3,14.9,"505",100],"513":[29.3,18.4,"561",98],"514":[21.0,2.2,"503",54],"515":[32.5,22.3,"561",90],"516":[38.9,24.2,"543",60],"517":[30.3,22.3,"591",60],"518":[29.0,13.6,"535",77],"519":[25.3,13.6,"503",87],"520":[16.0,12.6,"4243",100],"522":[23.7,0.0,"4228",90],"523":[35.4,25.8,"561",92],"524":[28.6,0.1,"536",89],"525":[17.7,8.4,"526",82],"526":[21.1,10.7,"525",35],"527":[19.6,14.7,"509",97],"528":[15.5,13.6,"542",91],"529":[18.3,0.1,"524",77],"532":[37.4,0.0,"548",98],"533":[17.7,10.6,"526",82],"534":[41.2,26.7,"591",99],"535":[29.9,18.4,"518",75],"536":[26.1,10.6,"524",58],"537":[10.6,9.2,"528",99],"539":[25.0,14.7,"121",68],"540":[30.1,18.4,"4216",95],"541":[21.5,12.6,"539",71],"542":[24.5,19.5,"523",60],"543":[38.4,26.1,"516",65],"544":[28.3,15.0,"587",89],"547":[19.7,14.9,"560",99],"548":[36.5,0.0,"532",100],"551":[36.7,28.9,"501",100],"552":[11.5,9.3,"526",89],"553":[18.3,14.7,"506",87],"557":[30.4,0.1,"558",71],"558":[29.8,0.1,"557",70],"559":[23.8,18.2,"562",99],"560":[31.3,23.0,"508",97],"561":[42.3,29.4,"523",75],"562":[33.2,22.3,"504",80],"563":[21.4,12.7,"560",66],"564":[20.0,13.5,"515",99],"567":[28.1,12.7,"503",79],"568":[32.7,12.7,"503",68],"569":[22.9,0.1,"548",100],"572":[25.7,18.2,"561",88],"573":[19.1,14.0,"4216",98],"577":[22.5,14.5,"598",94],"580":[13.8,8.9,"586",59],"581":[20.0,0.0,"593",78],"582":[13.3,7.9,"585",62],"583":[24.7,12.1,"598",85],"585":[22.2,0.0,"593",73],"586":[23.4,0.0,"592",67],"587":[30.3,13.7,"544",65],"588":[15.5,9.4,"593",59],"590":[11.2,5.5,"580",45],"591":[41.3,26.7,"534",82],"592":[23.2,0.0,"586",74],"593":[24.8,0.0,"581",67],"594":[28.0,13.6,"595",90],"595":[32.0,16.6,"594",72],"596":[29.9,16.0,"587",81],"597":[20.1,13.5,"4223",95],"598":[25.1,12.7,"577",84],"599":[26.7,16.1,"596",82],"600":[7.6,5.0,"667",77],"601":[4.9,0.0,"600",64],"603":[7.6,4.9,"667",56],"604":[10.4,4.3,"625",93],"605":[10.0,2.1,"665",52],"606":[7.6,2.1,"610",58],"607":[10.8,0.0,"674",43],"608":[10.5,0.0,"664",94],"609":[13.4,0.1,"613",86],"610":[9.3,6.1,"606",54],"611":[20.4,0.1,"508",62],"612":[20.9,0.1,"653",95],"613":[21.5,17.2,"668",74],"614":[14.5,7.5,"624",69],"615":[6.1,0.0,"605",66],"616":[20.6,0.1,"657",65],"617":[19.2,0.1,"4227",81],"618":[14.1,0.1,"612",68],"619":[35.2,0.2,"613",94],"621":[7.5,0.0,"658",62],"624":[13.3,7.5,"667",83],"625":[11.9,4.3,"604",82],"626":[12.3,7.5,"667",78],"627":[3.7,0.0,"658",65],"630":[6.7,4.2,"667",100],"631":[9.4,0.0,"625",70],"633":[9.7,4.3,"664",68],"634":[35.7,0.0,"668",50],"635":[3.2,0.0,"676",100],"636":[10.0,6.1,"634",51],"650":[18.0,0.0,"664",55],"651":[7.2,0.0,"676",83],"652":[7.5,0.2,"582",40],"653":[21.3,0.1,"612",87],"654":[21.0,0.1,"634",79],"655":[11.2,0.1,"618",100],"656":[7.3,6.1,"501",98],"657":[21.5,16.2,"634",38],"658":[7.4,4.3,"567",74],"659":[10.0,9.1,"619",71],"660":[12.9,7.5,"671",56],"661":[21.2,0.1,"526",87],"662":[9.9,0.0,"664",69],"663":[7.5,0.0,"633",84],"664":[39.7,0.0,"650",30],"665":[13.2,6.2,"526",50],"667":[22.7,6.2,"526",44],"668":[55.7,0.0,"613",69],"669":[51.4,0.2,"672",90],"671":[10.0,4.3,"660",72],"672":[30.8,28.8,"673",100],"673":[42.7,37.6,"672",73],"674":[5.0,2.2,"664",76],"676":[8.9,0.0,"651",80],"700":[6.9,3.5,"785",92],"701":[14.2,8.7,"702",76],"702":[12.1,8.3,"701",98],"703":[14.3,6.1,"760",83],"704":[16.0,0.0,"751",67],"705":[4.9,2.0,"706",62],"706":[9.7,0.0,"799",49],"707":[7.1,4.7,"744",68],"708":[14.2,0.0,"707",75],"709":[15.2,0.0,"734",87],"710":[6.8,3.6,"701",54],"711":[10.5,0.0,"701",54],"712":[10.1,0.0,"710",49],"714":[10.5,0.0,"588",54],"715":[4.7,2.4,"719",80],"716":[14.3,0.1,"719",62],"717":[2.6,0.0,"781",62],"718":[32.9,0.1,"732",59],"719":[25.6,0.0,"733",43],"720":[3.4,1.1,"764",39],"721":[3.1,0.1,"914",48],"722":[8.9,6.9,"702",92],"723":[4.4,1.6,"725",50],"724":[11.6,5.6,"753",89],"725":[21.4,0.0,"758",56],"726":[22.6,0.0,"724",62],"727":[14.2,6.4,"798",71],"728":[15.1,10.4,"783",87],"729":[11.6,3.3,"700",52],"730":[4.6,1.6,"729",69],"731":[16.1,4.2,"526",47],"732":[18.4,0.0,"775",80],"733":[20.9,0.0,"732",59],"734":[13.5,0.0,"709",100],"735":[37.4,0.0,"702",74],"736":[9.7,0.1,"731",51],"737":[12.2,6.8,"759",88],"738":[8.6,3.2,"741",45],"739":[6.6,0.1,"729",81],"740":[6.4,3.7,"741",73],"741":[5.1,3.3,"775",95],"742":[20.7,0.0,"562",92],"743":[27.8,0.1,"744",56],"744":[8.7,5.3,"743",85],"745":[2.6,0.0,"513",83],"746":[6.4,4.1,"744",82],"748":[6.2,2.7,"742",73],"749":[17.7,12.0,"540",89],"750":[14.0,0.0,"704",54],"751":[14.4,9.8,"701",90],"753":[22.1,12.9,"792",61],"754":[21.9,0.1,"702",84],"756":[21.5,0.0,"709",70],"757":[16.1,0.0,"913",58],"758":[10.9,4.5,"724",75],"759":[11.3,7.1,"737",93],"760":[13.3,7.7,"703",89],"761":[9.8,0.0,"743",95],"764":[5.0,0.1,"720",39],"766":[18.1,10.3,"749",64],"767":[6.0,0.0,"707",61],"768":[13.8,9.8,"702",99],"769":[6.3,2.9,"707",67],"770":[14.5,0.1,"744",86],"771":[8.8,6.2,"701",88],"773":[10.7,0.0,"744",93],"774":[45.5,0.0,"783",61],"775":[28.9,0.1,"732",71],"776":[26.7,0.0,"743",84],"777":[17.6,9.0,"927",61],"778":[4.7,0.1,"526",65],"779":[10.0,0.1,"785",69],"781":[6.1,3.2,"700",91],"783":[20.5,8.3,"774",67],"784":[21.3,9.6,"774",62],"785":[28.3,13.7,"701",46],"787":[10.5,4.5,"701",73],"789":[24.4,15.2,"785",42],"790":[17.7,10.3,"789",57],"792":[26.9,0.0,"753",88],"793":[16.2,10.8,"766",73],"794":[9.1,6.5,"701",93],"795":[12.2,8.5,"735",84],"796":[16.3,7.7,"910",53],"797":[14.3,8.3,"702",87],"798":[16.2,5.6,"727",65],"799":[4.1,0.0,"706",100],"800":[17.6,2.0,"517",60],"801":[6.5,4.4,"528",52],"802":[16.9,11.8,"896",94],"803":[9.9,3.6,"840",62],"804":[12.6,5.8,"842",65],"805":[19.7,0.2,"846",71],"806":[33.0,0.1,"873",54],"807":[7.8,2.6,"803",70],"808":[14.4,0.0,"809",71],"809":[8.9,4.6,"856",97],"810":[9.4,5.4,"818",61],"811":[11.3,6.7,"836",82],"812":[9.4,6.8,"836",91],"813":[12.1,7.1,"836",99],"814":[31.0,0.1,"864",92],"815":[12.0,0.0,"860",82],"816":[18.8,0.1,"892",63],"817":[10.6,5.3,"838",91],"818":[21.1,0.1,"875",76],"819":[7.1,0.1,"827",45],"820":[20.6,11.1,"882",88],"821":[6.7,3.8,"843",64],"822":[10.4,0.0,"805",57],"823":[22.6,0.1,"868",74],"824":[17.3,0.1,"825",95],"825":[18.2,0.1,"824",87],"826":[11.6,0.0,"841",61],"827":[19.7,11.9,"591",87],"828":[17.4,10.0,"859",84],"829":[17.0,11.8,"855",77],"830":[9.3,4.0,"831",59],"831":[36.3,0.0,"852",61],"832":[16.5,0.1,"899",89],"833":[12.7,3.6,"887",81],"834":[31.3,0.1,"802",81],"835":[33.5,0.1,"591",96],"836":[40.3,0.1,"813",48],"837":[73.6,0.1,"873",39],"838":[31.9,0.0,"847",69],"839":[20.6,14.1,"568",84],"840":[30.8,0.0,"814",36],"841":[11.7,0.1,"826",98],"842":[7.6,3.6,"804",100],"843":[12.4,4.4,"836",56],"844":[9.0,0.1,"826",59],"845":[10.2,6.5,"806",79],"846":[17.4,0.2,"805",92],"847":[8.7,5.7,"838",98],"848":[12.6,6.8,"882",92],"849":[8.8,0.0,"860",61],"850":[10.9,6.6,"882",55],"851":[26.1,15.7,"591",73],"852":[23.8,0.0,"831",92],"853":[19.5,8.7,"802",71],"854":[23.4,17.1,"886",76],"855":[16.8,11.4,"829",80],"856":[19.1,0.1,"809",99],"857":[5.6,1.8,"843",77],"858":[12.3,5.0,"836",73],"859":[30.5,0.1,"894",89],"860":[12.4,7.4,"837",83],"861":[21.5,0.0,"892",99],"862":[10.2,4.0,"818",68],"863":[19.1,0.1,"806",55],"864":[21.9,10.0,"814",66],"865":[19.1,9.0,"827",77],"866":[30.9,0.0,"871",91],"867":[4.4,3.7,"838",100],"868":[19.0,2.3,"823",48],"869":[15.2,0.0,"862",65],"870":[15.2,12.1,"875",84],"871":[14.8,7.4,"866",99],"873":[26.3,12.1,"806",73],"874":[15.4,11.1,"542",81],"875":[8.9,7.4,"870",73],"876":[8.6,0.0,"806",48],"877":[4.6,1.4,"816",42],"878":[8.3,0.0,"809",24],"879":[10.1,0.0,"838",66],"880":[31.6,9.8,"591",28],"881":[9.1,0.1,"875",67],"882":[21.7,11.1,"820",84],"883":[15.0,5.9,"838",48],"884":[15.4,5.2,"838",53],"885":[17.5,0.0,"899",83],"886":[36.4,0.1,"854",87],"887":[12.3,3.6,"833",89],"888":[30.3,23.9,"896",56],"890":[22.7,9.2,"894",45],"891":[28.9,14.4,"873",12],"892":[23.6,0.1,"861",89],"894":[61.6,0.1,"896",47],"895":[12.6,4.3,"866",61],"896":[36.3,24.5,"894",56],"897":[16.9,0.0,"831",89],"898":[11.4,0.0,"843",56],"899":[45.0,0.0,"542",49],"901":[30.3,0.1,"903",98],"902":[29.1,16.2,"918",68],"903":[25.7,9.0,"901",68],"904":[36.0,0.1,"903",89],"905":[27.3,0.1,"901",80],"906":[15.7,0.0,"910",57],"907":[12.8,0.1,"919",54],"908":[9.7,5.4,"917",70],"909":[7.3,5.6,"907",46],"910":[20.5,0.1,"796",77],"911":[9.4,4.4,"913",68],"912":[8.6,3.7,"913",99],"913":[8.2,2.8,"912",81],"914":[8.7,0.1,"921",55],"915":[43.5,0.1,"918",71],"916":[11.4,0.0,"919",53],"917":[17.9,0.2,"908",72],"918":[26.2,15.4,"902",91],"919":[7.4,3.4,"907",56],"920":[42.1,26.5,"903",39],"921":[12.4,6.2,"986",52],"923":[11.9,4.6,"985",61],"927":[52.6,0.0,"4237",60],"982":[38.9,0.0,"903",58],"983":[25.5,0.0,"903",74],"984":[29.9,0.0,"927",62],"985":[44.2,0.0,"927",62],"986":[42.4,0.0,"921",35],"4216":[24.7,16.9,"540",55],"4223":[19.2,13.3,"597",97],"4227":[16.2,0.1,"617",99],"4228":[27.5,16.9,"561",95],"4229":[34.7,0.0,"4234",73],"4233":[17.2,12.5,"501",89],"4234":[30.8,0.0,"4229",84],"4235":[28.3,0.0,"634",82],"4236":[37.1,29.2,"4216",65],"4237":[29.2,21.5,"4236",66],"4238":[3.2,0.0,"785",100],"4239":[13.5,0.0,"744",78],"4240":[21.0,14.0,"572",100],"4241":[18.7,12.0,"510",90],"4242":[11.2,6.3,"525",88],"4243":[16.8,11.9,"520",94]};
+  var numL=document.getElementById('numLinha'), erroL=document.getElementById('erroLinha'), resL=document.getElementById('resLinha');
+  numL.addEventListener('input',function(){erroL.textContent=''});
+  function verLinha(){
+    var v=numL.value.replace(/\D/g,'');
+    if(!v){erroL.textContent='Digite o número da sua linha.';resL.innerHTML='';numL.focus();return}
+    var k=LINHAS[v]?v:(LINHAS[('000'+v).slice(-3)]?('000'+v).slice(-3):null);
+    if(!k){erroL.textContent='Não encontramos a linha '+v+' no mapa oficial do Transcol. Confira o número.';resL.innerHTML='';return}
+    var d=LINHAS[k], r=d[0], s=d[1], par=d[2], pc=d[3], h='';
+    var n=function(x){return String(x).replace('.',',')};
+    if(s<1.5){
+      h='<p><strong>A linha '+k+' é circular</strong>: começa e termina quase no mesmo lugar. O trajeto completo tem '+n(r)+' km, cerca de '+Math.round(r*3)+' minutos rodando.</p>';
+    }else{
+      var f=r/s;
+      h='<div class="big">'+n(f.toFixed(1))+' vezes</div><p>A linha '+k+' roda '+n(r)+' km para ligar dois pontos que estão a '+n(s)+' km em linha reta.';
+      h+= f>=2?' Isso é o dobro ou mais do caminho direto.</p>':(f>=1.5?' Um desvio considerável.</p>':' Um trajeto relativamente direto.</p>');
+    }
+    if(par&&pc>=50){h+='<p><strong>'+pc+'% do caminho</strong> da sua linha é igual ao da linha '+par+'. Juntas, elas poderiam passar com mais frequência.</p>'}
+    else if(par){h+='<p>A linha que mais se parece com a sua é a '+par+', com '+pc+'% do caminho em comum.</p>'}
+    resL.innerHTML=h;
+  }
+  document.getElementById('verLinha').addEventListener('click',verLinha);
+  numL.addEventListener('keydown',function(e){if(e.key==='Enter')verLinha()});
+
+  var pass=2, dB=6, SM=1621, TARIFA=5.10;
+  function bolso(){
+    var mes=pass*TARIFA*dB*52/12;
+    document.getElementById('gastoMes').textContent='R$ '+Math.round(mes).toLocaleString('pt-BR');
+    document.getElementById('gastoPct').textContent='É '+Math.round(mes/SM*100)+'% de um salário mínimo de R$ 1.621.';
+  }
+  function grupo(id,attr,set){
+    document.querySelectorAll('#'+id+' button').forEach(function(b){
+      b.addEventListener('click',function(){
+        set(+b.dataset[attr]);
+        document.querySelectorAll('#'+id+' button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+        bolso();
+      });
+    });
+  }
+  grupo('passagens','p',function(v){pass=v});
+  grupo('diasBolso','d',function(v){dB=v});
+  bolso();
+
+  var LINK_FINAL=''; // endereço definitivo da página, ex.: https://dorme-nao-passageiro.netlify.app
+  var pg=LINK_FINAL||location.href;
+  var linkOk=/^https?:\/\//.test(pg)&&pg.indexOf('claudeusercontent')<0&&pg.indexOf('claude.ai')<0;
+  var texto='Somos nós que movemos a Grande Vitória. Veja quanto tempo o ônibus tira da sua vida e o que a gente pode fazer'+(linkOk?': '+pg:'.');
+  document.getElementById('zap').href='https://wa.me/?text='+encodeURIComponent(texto);
+})();
+</script>
+</body>
+</html>
